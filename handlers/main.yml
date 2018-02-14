@@ -1,5 +1,5 @@
 ---
-# handlers file for grafana
+# handlers file for ansible-role-grafana
 - name: restart grafana
   service:
     name: grafana-server

@@ -1,5 +1,5 @@
 ---
-# tasks file for grafana
+# tasks file for ansible-role-grafana
 - name: Setup prereqs
   include_tasks: prereqs.yml
 

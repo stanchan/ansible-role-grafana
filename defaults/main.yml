@@ -1,5 +1,5 @@
 ---
-# defaults file for grafana
+# defaults file for ansible-role-grafana
 required_packages: []
 systemd_service_dir: /lib/systemd/system
 is_service: no
