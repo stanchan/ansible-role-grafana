@@ -1,0 +1,13 @@
+---
+# tasks file for grafana
+- name: Setup prereqs
+  include_tasks: prereqs.yml
+
+- name: Install grafana
+  include_tasks: install.yml
+
+- name: Setup configs
+  include_tasks: config.yml
+
+- name: Setup services
+  include_tasks: service.yml

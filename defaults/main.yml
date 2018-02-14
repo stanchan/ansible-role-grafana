@@ -1,0 +1,57 @@
+---
+# defaults file for grafana
+required_packages: []
+systemd_service_dir: /lib/systemd/system
+is_service: no
+is_systemd: no
+
+grafana_version: 5.0.0-beta1
+grafana_release_system: linux-x64
+grafana_release_name: "grafana-{{ grafana_version }}"
+grafana_package: "grafana-{{ grafana_version }}.{{ grafana_release_system }}.tar.gz"
+grafana_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/{{ grafana_package }}"
+grafana_force_deploy: no
+grafana_ssl_verify: yes
+
+grafana_external_hostname: "{{ ansible_hostname }}"
+grafana_port: 3000
+
+grafana_user: grafana
+grafana_group: grafana
+
+grafana_root_path: /opt/grafana
+grafana_conf_file: "/etc/grafana/grafana.ini"
+grafana_bin_path: "{{ grafana_root_path }}/bin"
+grafana_releases_path: "{{ grafana_root_path }}/releases"
+grafana_data_path: "{{ grafana_root_path }}/data"
+grafana_plugins_path: "{{ grafana_data_path }}/plugins"
+grafana_provisioning_path: "{{ grafana_conf_file | dirname }}/provisioning"
+grafana_log_path: "{{ grafana_data_path }}/log"
+grafana_log_file: "/var/log/grafana/grafana.log"
+
+grafana_options:
+  - "config={{ grafana_conf_file }}"
+
+grafana_admin_user: admin
+grafana_admin_password: password
+
+grafana_database:
+  type: sqlite3
+  host: 127.0.0.1:3306
+  name: grafana
+  user: root
+  password: ''
+  path: grafana.db
+
+max_open_files: 10000
+
+grafana_configuration:
+  server:
+    http_addr: localhost
+    http_port: "{{ grafana_port }}"
+  paths:
+    data: "{{ grafana_data_path }}"
+    logs: "{{ grafana_log_path }}"
+    plugins: "{{ grafana_plugins_path }}"
+    provisioning: "{{ grafana_provisioning_path }}"
+  database: "{{ grafana_database }}"

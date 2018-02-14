@@ -1,0 +1,44 @@
+---
+- name: Check for init.d service
+  set_fact:
+    is_service: yes
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14"
+
+- name: Check for systemd service
+  set_fact:
+    is_systemd: yes
+  when: (ansible_os_family  == "RedHat" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8")
+
+
+- block:
+  - name: Create grafana-server sysv init script (Ubuntu 14.04)
+    template:
+      src: grafana-server.init.j2
+      dest: /etc/init.d/grafana-server
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Enable grafana service
+    service:
+      name: grafana-server
+      enabled: yes
+      state: started
+  when: is_service
+
+- block:
+  - name: Create grafana-server systemd service
+    template:
+      src: grafana-server.service.j2
+      dest: "{{ systemd_service_dir }}/grafana-server.service"
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Enable grafana systemd service
+    systemd:
+      name: grafana-server
+      enabled: yes
+      daemon-reload: yes
+      state: started
+  when: is_systemd

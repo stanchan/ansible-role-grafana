@@ -1,0 +1,29 @@
+---
+- name: Copy default grafana config
+  copy:
+    src: defaults/defaults.ini
+    dest: "{{ grafana_root_path }}/conf/defaults.ini"
+    mode: 0644
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+
+- name: Create grafana config
+  template:
+    src: grafana.ini.j2
+    dest: "{{ grafana_conf_file }}"
+    mode: 0644
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+  notify:
+    - restart grafana
+
+- name: Create grafana config
+  template:
+    src: grafana/datasources.yaml.j2
+    dest: "{{ grafana_provisioning_path }}/datasources/datasources.yaml"
+    mode: 0644
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+  notify:
+    - restart grafana
+  when: grafana_datasources | default({})

@@ -1,0 +1,61 @@
+---
+- name: Check grafana version
+  command: "{{ grafana_bin_path }}/grafana-server -v"
+  register: grafana_check
+  changed_when: false
+  ignore_errors: true
+
+- name: Download grafana package
+  get_url:
+    url: "{{ grafana_url }}"
+    dest: "{{ grafana_releases_path }}"
+    validate_certs: "{{ grafana_ssl_verify }}"
+  when: grafana_check|failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
+
+- name: Extract grafana package
+  unarchive:
+    copy: no
+    src: "{{ grafana_releases_path }}/{{ grafana_package }}"
+    dest: /tmp
+  when: grafana_check|failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
+
+- name: Copy grafana binaries
+  copy:
+    src: "/tmp/{{ grafana_release_name }}/bin/{{ item }}"
+    dest: "{{ grafana_bin_path }}/{{ item }}"
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    remote_src: True
+    mode: 0755
+  with_items:
+    - grafana-server
+    - grafana-cli
+  when: grafana_check|failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
+  notify: restart grafana
+
+- name: Link grafana binary
+  file:
+    src: "{{ grafana_bin_path }}/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+  with_items:
+    - grafana-server
+    - grafana-cli
+
+- name: Deploy grafana app content
+  synchronize:
+    src: "/tmp/{{ grafana_release_name }}/public"
+    dest: "{{ grafana_root_path }}/"
+    delete: yes
+    recursive: yes
+    rsync_opts:
+      - "--chown={{ grafana_user }}:{{ grafana_group }}"
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: Change grafana directory permissions and ownership
+  file:
+    path: "{{ grafana_root_path }}"
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes

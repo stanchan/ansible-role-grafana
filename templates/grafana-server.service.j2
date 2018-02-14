@@ -1,0 +1,21 @@
+[Unit]
+Description=Grafana server
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ grafana_user }}
+Group={{ grafana_group }}
+WorkingDirectory={{ grafana_root_path }}
+RuntimeDirectory=grafana-server
+RuntimeDirectoryMode=0750
+Restart=on-failure
+ExecStart=/bin/sh -c "{{ grafana_bin_path }}/grafana-server {% for option in grafana_options %}-{{ option }} {% endfor %}> {{ grafana_log_file }} 2>&1"
+ExecReload=/bin/kill -HUP $MAINPID
+PrivateTmp=yes
+KillSignal=SIGTERM
+LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target
