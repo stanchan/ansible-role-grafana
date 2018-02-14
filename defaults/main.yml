@@ -29,7 +29,7 @@ grafana_provisioning_path: "{{ grafana_conf_file | dirname }}/provisioning"
 grafana_log_path: "{{ grafana_data_path }}/log"
 grafana_log_file: "/var/log/grafana/grafana.log"
 
-grafana_options:
+grafana_service_options:
   - "config={{ grafana_conf_file }}"
 
 grafana_admin_user: admin
