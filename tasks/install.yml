@@ -2,8 +2,8 @@
 - name: Check grafana version
   command: "{{ grafana_bin_path }}/grafana-server -v"
   register: grafana_check
-  changed_when: false
-  ignore_errors: true
+  changed_when: no
+  ignore_errors: yes
 
 - name: Download grafana package
   get_url:
