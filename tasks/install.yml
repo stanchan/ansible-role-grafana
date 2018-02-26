@@ -48,8 +48,6 @@
     dest: "{{ grafana_root_path }}/"
     delete: yes
     recursive: yes
-    rsync_opts:
-      - "--chown={{ grafana_user }}:{{ grafana_group }}"
   delegate_to: "{{ inventory_hostname }}"
 
 - name: Change grafana directory permissions and ownership
