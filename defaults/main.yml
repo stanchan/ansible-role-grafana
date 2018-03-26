@@ -5,7 +5,7 @@ systemd_service_dir: /lib/systemd/system
 is_service: no
 is_systemd: no
 
-grafana_version: 5.0.0
+grafana_version: 5.0.3
 grafana_release_system: linux-x64
 grafana_release_name: "grafana-{{ grafana_version }}"
 grafana_package: "grafana-{{ grafana_version }}.{{ grafana_release_system }}.tar.gz"
@@ -42,10 +42,12 @@ grafana_database:
   user: root
   password: ''
   path: grafana.db
+  conn_max_lifetime: 14400
 
 max_open_files: 10000
 
 grafana_configuration:
+  instance_name: "{{ ansible_hostname }}"
   server:
     http_addr: localhost
     http_port: "{{ grafana_port }}"
