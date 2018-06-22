@@ -2,7 +2,7 @@
 
 def escape(data, quote='"'):
     if quote is not None and len(quote):
-        return str(data).replace('\\', '\\\\').replace(quote, "\\%s" % quote)
+        return str(data).replace('\\', '\\\\').replace(quote, "\\{:s}".format(quote))
     else:
         return data
 
@@ -25,7 +25,7 @@ def to_ini(data, comment="#", delimiter="=", indent="", quote="",section_is_comm
                 item = '""'
 
             if item is not None:
-                rv += "%s%s%s%s%s%s\n" % (indent, prop, delimiter, quote, escape(item, quote), quote)
+                rv += "{:s}{:s}{:s}{:s}{:s}{:s}\n".format(indent, prop, delimiter, quote, escape(item, quote), quote)
 
     for section, props in sorted(data.iteritems()):
         if isinstance(props, dict):
@@ -33,9 +33,9 @@ def to_ini(data, comment="#", delimiter="=", indent="", quote="",section_is_comm
                 rv += "\n"
 
             if section_is_comment:
-                rv += "%s %s\n" % (comment, section)
+                rv += "{:s} {:s}\n".format(comment, section)
             else:
-                rv += "[%s]\n" % (section)
+                rv += "[{:s}]\n".format(section)
 
             rv += to_ini(
                 props,

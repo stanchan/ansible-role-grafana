@@ -10,14 +10,14 @@
     url: "{{ grafana_url }}"
     dest: "{{ grafana_releases_path }}"
     validate_certs: "{{ grafana_ssl_verify }}"
-  when: grafana_check|failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
+  when: grafana_check is failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
 
 - name: Extract grafana package
   unarchive:
     copy: no
     src: "{{ grafana_releases_path }}/{{ grafana_package }}"
     dest: /tmp
-  when: grafana_check|failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
+  when: grafana_check is failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
 
 - name: Copy grafana binaries
   copy:
@@ -30,7 +30,7 @@
   with_items:
     - grafana-server
     - grafana-cli
-  when: grafana_check|failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
+  when: grafana_check is failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
   notify: restart grafana
 
 - name: Link grafana binary
