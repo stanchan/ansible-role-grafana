@@ -6,7 +6,7 @@ is_service: no
 is_systemd: no
 
 grafana_version: 5.2.1
-grafana_release_system: linux-x64
+grafana_release_system: linux-amd64
 grafana_release_name: "grafana-{{ grafana_version }}"
 grafana_package: "grafana-{{ grafana_version }}.{{ grafana_release_system }}.tar.gz"
 grafana_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/{{ grafana_package }}"
