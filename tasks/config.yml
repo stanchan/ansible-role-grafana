@@ -27,3 +27,11 @@
   notify:
     - restart grafana
   when: grafana_datasources | default({})
+
+- name: Create grafana default profile
+  template:
+    src: grafana-profile.sh.j2
+    dest: "/etc/profile.d/grafana.sh"
+    mode: 0644
+    owner: root
+    group: root
