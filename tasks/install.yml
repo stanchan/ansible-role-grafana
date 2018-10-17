@@ -27,7 +27,7 @@
     group: "{{ grafana_group }}"
     remote_src: yes
     mode: 0755
-  with_items:
+  loop:
     - grafana-server
     - grafana-cli
   when: grafana_check is failed or ( grafana_version not in grafana_check.stderr ) or grafana_force_deploy
@@ -38,7 +38,7 @@
     src: "{{ grafana_bin_path }}/{{ item }}"
     dest: "/usr/bin/{{ item }}"
     state: link
-  with_items:
+  loop:
     - grafana-server
     - grafana-cli
 

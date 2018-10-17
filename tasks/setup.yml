@@ -1,0 +1,38 @@
+---
+- name: Create grafana group
+  group:
+    name: "{{ grafana_group }}"
+    system: yes
+    state: present
+  when: grafana_group != "root"
+
+- name: Create grafana user
+  user:
+    name: "{{ grafana_user }}"
+    state: present
+    comment: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    shell: /sbin/nologin
+    createhome: no
+    system: yes
+  when: grafana_user != "root"
+
+- name: Check filesystem paths
+  file:
+    dest: "{{ item }}"
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    state: directory
+  loop:
+    - "{{ grafana_root_path }}"
+    - "{{ grafana_root_path }}/conf"
+    - "{{ grafana_releases_path }}"
+    - "{{ grafana_bin_path }}"
+    - "{{ grafana_conf_file | dirname }}"
+    - "{{ grafana_data_path }}"
+    - "{{ grafana_plugins_path }}"
+    - "{{ grafana_provisioning_path }}"
+    - "{{ grafana_provisioning_path }}/dashboards"
+    - "{{ grafana_provisioning_path }}/datasources"
+    - "{{ grafana_log_file | dirname }}"
+    - "{{ grafana_log_path }}"
