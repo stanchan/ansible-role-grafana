@@ -5,7 +5,7 @@ systemd_service_dir: /lib/systemd/system
 is_service: no
 is_systemd: no
 
-grafana_version: 5.3.0
+grafana_version: 5.3.2
 grafana_release_system: linux-amd64
 grafana_release_name: "grafana-{{ grafana_version }}"
 grafana_package: "grafana-{{ grafana_version }}.{{ grafana_release_system }}.tar.gz"
@@ -15,6 +15,9 @@ grafana_ssl_verify: yes
 
 grafana_external_hostname: "{{ ansible_hostname }}"
 grafana_port: 3000
+grafana_wait_delay: 1
+grafana_wait_sleep: 10
+grafana_wait_timeout: 300
 
 grafana_user: grafana
 grafana_group: grafana
@@ -26,6 +29,10 @@ grafana_releases_path: "{{ grafana_root_path }}/releases"
 grafana_data_path: "{{ grafana_root_path }}/data"
 grafana_plugins_path: "{{ grafana_data_path }}/plugins"
 grafana_provisioning_path: "{{ grafana_conf_file | dirname }}/provisioning"
+grafana_provisioning_datasources_path: "{{ grafana_provisioning_path }}/datasources"
+grafana_provisioning_dashboards_path: "{{ grafana_provisioning_path }}/dashboards"
+grafana_dashboards_template_path: "grafana/dashboards"
+grafana_dashboards_path: /var/lib/grafana/dashboards
 grafana_log_path: "{{ grafana_data_path }}/log"
 grafana_log_file: "/var/log/grafana/grafana.log"
 
@@ -50,7 +57,6 @@ grafana_database:
 max_open_files: 10000
 
 grafana_configuration:
-  instance_name: "{{ ansible_hostname }}"
   server:
     http_addr: localhost
     http_port: "{{ grafana_port }}"
@@ -60,3 +66,60 @@ grafana_configuration:
     plugins: "{{ grafana_plugins_path }}"
     provisioning: "{{ grafana_provisioning_path }}"
   database: "{{ grafana_database }}"
+  security:
+    admin_user: "{{ grafana_admin_user }}"
+    admin_password: "{{ grafana_admin_password }}"
+
+grafana_plugins:
+  - name: raintank-worldping-app
+    version: 1.2.4
+    type: community
+  - name: grafana-worldmap-panel
+    version: 0.1.2
+    type: community
+  - name: grafana-diagram
+    url: https://github.com/stanchan/grafana-diagram/releases/download/2.0.0/grafana-diagram-2.0.0.zip
+    type: custom
+
+grafana_datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    org_id: 1
+    url: http://127.0.0.1:9090
+    jsonData:
+      scrapeInterval: "15s"
+    editable: false
+    version: 1
+
+grafana_delete_datasources: []
+
+grafana_dashboards:
+  - name: default
+    template: grafana/default_dashboard.yaml.j2
+    providers:
+      - name: "default"
+        orgId: 1
+        folder: ''
+        type: "file"
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        options:
+          path: "{{ grafana_dashboards_path }}"
+
+grafana_dashboard_templates:
+  - name: "Node Metrics"
+    type: custom
+    template: "{{ grafana_dashboards_template_path }}/Node Metrics.json.j2"
+    datasource: Prometheus
+  - name: "JVM Metrics"
+    type: custom
+    template: "{{ grafana_dashboards_template_path }}/JVM Metrics.json.j2"
+    datasource: Prometheus
+  - name: "Solr Metrics"
+    type: custom
+    template: "{{ grafana_dashboards_template_path }}/Solr Metrics.json.j2"
+    datasource: Prometheus
+
+grafana_jvm_metrics_filter: '/^(?!node|pushgateway|grafana|prometheus)(.+)$/'
+grafana_solr_collection_filter: ''

@@ -1,0 +1,20 @@
+---
+- name: Copy dashboard configs
+  template:
+    src: "{{ item.template }}"
+    dest: "{{ grafana_provisioning_dashboards_path }}/{{ item.name }}.yaml"
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    mode: 0640
+  loop: "{{ grafana_dashboards }}"
+  notify:
+    - restart grafana
+
+- name: Copy dashboard templates
+  template:
+    src: "{{ item.template }}"
+    dest: "{{ grafana_dashboards_path }}/{{ (item.template | basename | splitext)[0] }}.json"
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    mode: 0640
+  loop: "{{ grafana_dashboard_templates | selectattr('type', 'equalto', 'custom') | list }}"

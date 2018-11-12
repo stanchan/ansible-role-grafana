@@ -20,13 +20,13 @@
 - name: Create grafana datasources config
   template:
     src: grafana/datasources.yaml.j2
-    dest: "{{ grafana_provisioning_path }}/datasources/datasources.yaml"
+    dest: "{{ grafana_provisioning_datasources_path }}/datasources.yaml"
     mode: 0644
     owner: "{{ grafana_user }}"
     group: "{{ grafana_group }}"
   notify:
     - restart grafana
-  when: grafana_datasources | default({})
+  when: grafana_datasources
 
 - name: Create grafana default profile
   template:

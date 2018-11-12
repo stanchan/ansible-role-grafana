@@ -1,0 +1,26 @@
+---
+- name: Install community plugins
+  command: "grafana-cli --pluginsDir {{ grafana_plugins_path }} plugins install {{ item.name }} {{ item.version }}"
+  args:
+    creates: "{{ grafana_plugins_path }}/{{ item.name }}"
+  register: community_plugins_install_status
+  loop: "{{ grafana_plugins | selectattr('type', 'equalto', 'community') | list }}"
+  notify:
+    - restart grafana
+
+- name: Install manual plugins
+  command: "grafana-cli --pluginUrl {{ item.url }} --pluginsDir {{ grafana_plugins_path }} plugins install {{ item.name }}"
+  args:
+    creates: "{{ grafana_plugins_path }}/{{ item.name }}"
+  register: manual_plugins_install_status
+  loop: "{{ grafana_plugins | selectattr('type', 'equalto', 'custom') | list }}"
+  notify:
+    - restart grafana
+
+- name: Change grafana plugins directory permissions and ownership
+  file:
+    path: "{{ grafana_plugins_path }}"
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes

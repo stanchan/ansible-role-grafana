@@ -14,3 +14,12 @@
 
 - name: Setup services
   include_tasks: service.yml
+
+- name: Wait for services
+  include_tasks: wait.yml
+
+- name: Install plugins
+  include_tasks: plugins.yml
+
+- name: Install dashboards
+  include_tasks: dashboards.yml
