@@ -13,7 +13,8 @@ grafana_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/{{ gra
 grafana_force_deploy: no
 grafana_ssl_verify: yes
 
-grafana_external_hostname: "{{ ansible_hostname }}"
+grafana_netif: eth0
+grafana_external_hostname: "{{ hostvars[inventory_hostname][grafana_netif]['ipv4']['address'] }}"
 grafana_port: 3000
 grafana_wait_delay: 1
 grafana_wait_sleep: 10
@@ -58,7 +59,7 @@ max_open_files: 10000
 
 grafana_configuration:
   server:
-    http_addr: localhost
+    http_addr: "{{ grafana_external_hostname }}"
     http_port: "{{ grafana_port }}"
   paths:
     data: "{{ grafana_data_path }}"
