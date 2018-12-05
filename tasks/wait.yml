@@ -1,7 +1,7 @@
 ---
 - name: Wait for Grafana availability
   wait_for:
-    host: 127.0.0.1
+    host: "{{ grafana_external_hostname }}"
     port: "{{ grafana_port }}"
     delay: "{{ grafana_wait_delay }}"
     sleep: "{{ grafana_wait_sleep }}"
