@@ -2967,24 +2967,24 @@
         "useTags": false
       },
       {
-        "allValue": null,
-        "current": {},
-        "datasource": "{{ item.datasource | default("Prometheus") }}",
+        "current": {
+          "tags": [],
+          "text": "solr",
+          "value": "solr"
+        },
         "hide": 0,
-        "includeAll": false,
         "label": "role",
-        "multi": false,
         "name": "role",
-        "options": [],
-        "query": "label_values(job)",
-        "refresh": 1,
-        "regex": "/^(solr.+)$/",
-        "sort": 1,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "options": [
+          {
+            "selected": true,
+            "text": "solr",
+            "value": "solr"
+          }
+        ],
+        "query": "solr",
+        "skipUrlSync": false,
+        "type": "constant"
       },
       {
         "allValue": null,
