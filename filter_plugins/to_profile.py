@@ -3,7 +3,7 @@
 def to_profile(data, delimiter="="):
     rv = ""
 
-    for key, val in sorted(data.iteritems()):
+    for key, val in sorted(data.items()):
         if key is not None:
             rv += "export {!s}{!s}{!s}\n".format(key, delimiter, val)
 

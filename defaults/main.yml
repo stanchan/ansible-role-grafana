@@ -122,5 +122,5 @@ grafana_dashboard_templates:
     template: "{{ grafana_dashboards_template_path }}/Solr Metrics.json.j2"
     datasource: Prometheus
 
-grafana_jvm_metrics_filter: '/^(?!node|pushgateway|grafana|prometheus_statistics)(.+)$/'
+grafana_jvm_metrics_filter: '/^(?!node|pushgateway|grafana|alertmanager|prometheus_statistics)(.+)$/'
 grafana_solr_collection_filter: ''
