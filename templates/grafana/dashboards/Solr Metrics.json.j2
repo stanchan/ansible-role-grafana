@@ -3002,8 +3002,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "devtest",
-          "value": "devtest"
+          "text": "{{ grafana_default_environment }}",
+          "value": "{{ grafana_default_environment }}"
         },
         "datasource": "{{ item.datasource | default("Prometheus") }}",
         "definition": "",
@@ -3047,8 +3047,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "logs",
-          "value": "logs"
+          "text": "{{ grafana_solr_default_collection }}",
+          "value": "{{ grafana_solr_default_collection }}"
         },
         "datasource": "{{ item.datasource | default("Prometheus") }}",
         "definition": "",

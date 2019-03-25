@@ -85,7 +85,7 @@
             {
               "alias": "Avg",
               "dsType": "influxdb",
-              "expr": "zookeeper_avgrequestlatency{environment=\"devtest\"}",
+              "expr": "zookeeper_avgrequestlatency{environment=\"{{ grafana_default_environment }}\"}",
               "format": "time_series",
               "groupBy": [
                 {
@@ -128,7 +128,7 @@
             {
               "alias": "Max",
               "dsType": "influxdb",
-              "expr": "zookeeper_maxrequestlatency{environment=\"devtest\"}",
+              "expr": "zookeeper_maxrequestlatency{environment=\"{{ grafana_default_environment }}\"}",
               "format": "time_series",
               "groupBy": [
                 {
@@ -171,7 +171,7 @@
             {
               "alias": "Min",
               "dsType": "influxdb",
-              "expr": "zookeeper_minrequestlatency{environment=\"devtest\"}",
+              "expr": "zookeeper_minrequestlatency{environment=\"{{ grafana_default_environment }}\"}",
               "format": "time_series",
               "groupBy": [
                 {
@@ -282,7 +282,7 @@
             {
               "alias": "Sent",
               "dsType": "influxdb",
-              "expr": "zookeeper_packetsreceived{environment=\"devtest\"}",
+              "expr": "zookeeper_packetsreceived{environment=\"{{ grafana_default_environment }}\"}",
               "format": "time_series",
               "groupBy": [
                 {
@@ -324,7 +324,7 @@
             {
               "alias": "Received",
               "dsType": "influxdb",
-              "expr": "zookeeper_packetssent{environment=\"devtest\"}",
+              "expr": "zookeeper_packetssent{environment=\"{{ grafana_default_environment }}\"}",
               "format": "time_series",
               "groupBy": [
                 {
