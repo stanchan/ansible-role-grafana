@@ -19,4 +19,5 @@ galaxy_info:
     - monitoring
   galaxy_tags:
     - grafana
-dependencies:
+
+dependencies: []

@@ -5,7 +5,7 @@ systemd_service_dir: /lib/systemd/system
 is_service: no
 is_systemd: no
 
-grafana_version: 6.0.2
+grafana_version: 6.1.4
 grafana_release_system: linux-amd64
 grafana_release_name: "grafana-{{ grafana_version }}"
 grafana_package: "grafana-{{ grafana_version }}.{{ grafana_release_system }}.tar.gz"
