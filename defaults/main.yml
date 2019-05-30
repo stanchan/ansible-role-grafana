@@ -73,10 +73,10 @@ grafana_configuration:
 
 grafana_plugins:
   - name: raintank-worldping-app
-    version: 1.2.4
+    version: 1.2.6
     type: community
   - name: grafana-worldmap-panel
-    version: 0.1.2
+    version: 0.2.0
     type: community
   - name: grafana-diagram
     url: https://github.com/stanchan/grafana-diagram/releases/download/2.0.0/grafana-diagram-2.0.0.zip
