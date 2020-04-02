@@ -5,7 +5,7 @@ systemd_service_dir: /lib/systemd/system
 is_service: no
 is_systemd: no
 
-grafana_version: 6.6.0
+grafana_version: 6.7.1
 grafana_release_system: linux-amd64
 grafana_release_name: "grafana-{{ grafana_version }}"
 grafana_package: "grafana-{{ grafana_version }}.{{ grafana_release_system }}.tar.gz"
@@ -73,14 +73,20 @@ grafana_configuration:
 
 grafana_plugins:
   - name: raintank-worldping-app
-    version: 1.2.6
+    version: 1.2.7
     type: community
   - name: grafana-worldmap-panel
-    version: 0.2.0
+    version: 0.2.1
     type: community
-  - name: grafana-diagram
-    url: https://github.com/stanchan/grafana-diagram/releases/download/2.0.0/grafana-diagram-2.0.0.zip
-    type: custom
+  - name: grafana-googlesheets-datasource
+    version: 0.9.0
+    type: community
+  - name: jdbranham-diagram-panel
+    version: 1.6.1
+    type: community
+  - name: pue-solr-datasource
+    version: 1.0.2
+    type: community
 
 grafana_datasources:
   - name: Prometheus
